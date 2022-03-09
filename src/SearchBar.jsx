@@ -3,7 +3,15 @@ import React from 'react';
 class SearchBar extends React.Component {
   render() {
     return (
-      <h1>Search Bar</h1>
+      <form>
+        <label htmlFor="zipCode">
+          Enter Zip Code
+          <input
+            type="text"
+            name="zipCode"
+          />
+        </label>
+      </form>
     );
   }
 }
