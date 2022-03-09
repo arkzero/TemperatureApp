@@ -11,6 +11,8 @@ class SearchBar extends React.Component {
   }
 
   render() {
+    const { zipCode } = this.state;
+
     return (
       <form style={{ textAlign: 'center' }}>
         <label htmlFor="zipCode">
@@ -18,6 +20,8 @@ class SearchBar extends React.Component {
           <input
             type="text"
             name="zipCode"
+            value={zipCode}
+            onChange={(e) => this.setState({ zipCode: e.target.value })}
           />
         </label>
       </form>
