@@ -52,7 +52,6 @@ class App extends React.Component {
     const { tempFar } = this.state;
     return (
       <div>
-        <h1>Temperature Application: {tempFar}</h1>
         <WeatherDisplay temp={tempFar} />
       </div>
     );
