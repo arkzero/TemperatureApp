@@ -10,11 +10,22 @@ class SearchBar extends React.Component {
     };
   }
 
+  onFormSubmit(event) {
+    event.preventDefault();
+
+    const { onSubmit } = this.props;
+    const { zipCode } = this.state;
+
+    onSubmit(zipCode);
+  }
+
   render() {
     const { zipCode } = this.state;
 
     return (
-      <form style={{ textAlign: 'center' }}>
+      <form
+        onSubmit={this.onFormSubmit}
+        style={{ textAlign: 'center' }}>
         <label htmlFor="zipCode">
           Enter Zip Code
           <input
@@ -31,6 +42,7 @@ class SearchBar extends React.Component {
 
 SearchBar.propTypes = {
   zipCode: PropTypes.string,
+  onSubmit: PropTypes.func.isRequired,
 };
 
 SearchBar.defaultProps = {
