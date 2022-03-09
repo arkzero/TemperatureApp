@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import axios from 'axios';
 
 import WeatherDisplay from './WeatherDisplay';
+import SearchBar from './SearchBar';
 
 const OPEN_WEATHER_API_KEY = '362a4b039038e395008ed626997d3623';
 
@@ -52,6 +53,7 @@ class App extends React.Component {
     const { tempFar } = this.state;
     return (
       <div>
+        <SearchBar />
         <WeatherDisplay temp={tempFar} />
       </div>
     );
