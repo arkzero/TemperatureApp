@@ -20,6 +20,7 @@ class App extends React.Component {
       tempFar: null,
       tempKelv: null,
       error: null,
+      zipCode: '07950',
     };
   }
 
@@ -27,18 +28,23 @@ class App extends React.Component {
     this.getTemperature();
   }
 
-  componentDidUpdate() {
-    const { tempKelv, tempFar } = this.state;
+  componentDidUpdate(prevProps, prevState) {
+    const { tempKelv, tempFar, zipCode } = this.state;
+
     if (tempKelv) {
       const far = convertKelvinToFahrenheit(tempKelv);
       if (far !== tempFar) {
         this.setState({ tempFar: far });
       }
     }
+
+    if (prevState.zipCode !== zipCode) {
+      this.getTemperature();
+    }
   }
 
   async getTemperature() {
-    const zipCode = '07950';
+    const { zipCode } = this.state;
     const countryCode = 'us';
 
     try {
@@ -49,9 +55,9 @@ class App extends React.Component {
     }
   }
 
-  onFormSubmit(zipCode) {
-    console.log(zipCode);
-  }
+  onFormSubmit = (zipCode) => {
+    this.setState({ zipCode });
+  };
 
   render() {
     const { tempFar } = this.state;
