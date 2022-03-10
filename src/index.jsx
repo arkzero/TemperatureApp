@@ -49,11 +49,15 @@ class App extends React.Component {
     }
   }
 
+  onFormSubmit(zipCode) {
+    console.log(zipCode);
+  }
+
   render() {
     const { tempFar } = this.state;
     return (
       <div>
-        <SearchBar />
+        <SearchBar onSubmit={this.onFormSubmit} zipCode={'07950'} />
         <WeatherDisplay temp={tempFar} />
       </div>
     );
