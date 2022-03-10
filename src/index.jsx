@@ -1,15 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import axios from 'axios';
 
 import WeatherDisplay from './WeatherDisplay';
 import SearchBar from './SearchBar';
-
-const OPEN_WEATHER_API_KEY = '362a4b039038e395008ed626997d3623';
-
-function convertKelvinToFahrenheit(temp) {
-  return ((9 / 5) * (temp - 273) + 32).toFixed(2);
-}
+import OpenWeatherMap from './OpenWeatherMap';
 
 class App extends React.Component {
   constructor(props) {
@@ -17,8 +11,7 @@ class App extends React.Component {
 
     // Initialize State
     this.state = {
-      tempFar: null,
-      tempKelv: null,
+      temp: null,
       error: null,
       zipCode: '07950',
     };
@@ -29,14 +22,7 @@ class App extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { tempKelv, tempFar, zipCode } = this.state;
-
-    if (tempKelv) {
-      const far = convertKelvinToFahrenheit(tempKelv);
-      if (far !== tempFar) {
-        this.setState({ tempFar: far });
-      }
-    }
+    const { zipCode } = this.state;
 
     if (prevState.zipCode !== zipCode) {
       this.getTemperature();
@@ -45,11 +31,10 @@ class App extends React.Component {
 
   async getTemperature() {
     const { zipCode } = this.state;
-    const countryCode = 'us';
 
     try {
-      const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?zip=${zipCode},${countryCode}&appid=${OPEN_WEATHER_API_KEY}`);
-      this.setState({ tempKelv: response.data.main.temp });
+      const response = await OpenWeatherMap.getWeatherByZip(zipCode);
+      this.setState({ temp: response });
     } catch (error) {
       this.setState({ error: error.message });
     }
@@ -60,13 +45,25 @@ class App extends React.Component {
   };
 
   render() {
-    const { tempFar } = this.state;
-    return (
-      <div>
-        <SearchBar onSubmit={this.onFormSubmit} zipCode={'07950'} />
-        <WeatherDisplay temp={tempFar} />
-      </div>
-    );
+    const { temp, error } = this.state;
+
+    if (temp) {
+      return (
+        <div>
+          <SearchBar onSubmit={this.onFormSubmit} zipCode={'07950'} />
+          <WeatherDisplay temp={temp} />
+        </div>
+      );
+    }
+
+    if (error) {
+      return (
+        <h2>ERROR: {error}</h2>
+      )
+    }
+
+    return <h2>Loading...</h2>
+
   }
 }
 
